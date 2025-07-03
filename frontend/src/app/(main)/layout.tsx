@@ -10,13 +10,13 @@ export default function MainLayout({
 }) {
     return (
         <>
-            <Sidebar>
-
-            </Sidebar>
-            <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-                <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                    {children}
-                </div>
+            <div className="flex bg-gray-100 p-4"> {/*min-h-screen*/}
+                <Sidebar />
+                <main className="flex-1 bg-white rounded-lg shadow-md">
+                    <div className="container-md mx-60 my-20">
+                        {children}
+                    </div>
+                </main>
             </div>
         </>
     );

@@ -77,22 +77,24 @@ const Sidebar: React.FC<SidebarProps> = ({
             {/* Footer/User Section */}
             <div className="mt-auto border-t border-t-[#EBEDEE]">
                 {/* User Profile */}
-                <div className="flex cursor-pointer items-center px-4 py-3 transition hover:bg-gray-100">
-                    <img
-                        src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=32&h=32&fit=crop&crop=face"
-                        alt="John Doe"
-                        className="size-8 rounded-full"
-                    />
-                    <div
-                        className={cn(
-                            'ml-3 flex flex-col transition-opacity duration-200',
-                            isCollapsed && 'hidden opacity-0',
-                        )}
-                    >
-                        <span className="text-sm font-medium text-gray-700">John Doe</span>
-                        <span className="text-xs text-gray-500">john@example.com</span>
+                <a href="/profile">
+                    <div className="flex cursor-pointer items-center px-4 py-3 transition hover:bg-[#EBEDEE]">
+                        <img
+                            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=32&h=32&fit=crop&crop=face"
+                            alt="John Doe"
+                            className="size-8 rounded-full"
+                        />
+                        <div
+                            className={cn(
+                                'ml-3 flex flex-col transition-opacity duration-200',
+                                isCollapsed && 'hidden opacity-0',
+                            )}
+                        >
+                            <span className="text-sm font-medium text-gray-700">John Doe</span>
+                            <span className="text-xs text-gray-500">john@example.com</span>
+                        </div>
                     </div>
-                </div>
+                </a>
                 {/* User Actions */}
                 <div className="px-2 pb-2">
                     {userActions.map((item, idx) => (
