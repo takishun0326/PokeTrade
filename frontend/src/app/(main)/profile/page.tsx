@@ -1,5 +1,6 @@
 import React from "react";
-import Button from '@/components/common/Button'; // 例: 共通コンポーネントのインポート
+import Button from '@/components/common/Button';
+import StarRating from '@/components/common/StarRating';
 import { formatDateToYYYYMMDD } from "@/lib/date";
 import { format } from "path";
 import { ListItemSuffix } from "@material-tailwind/react";
@@ -104,6 +105,8 @@ export default function Profile() {
                             </div>
                             <div>
                                 {item.stars}
+                                <StarRating rating={item.stars}>
+                                </StarRating>
                             </div>
                             <p className="text-[16px]">
                                 {item.message}
