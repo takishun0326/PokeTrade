@@ -24,7 +24,7 @@ export default function Profile() {
     ]
 
     return (<>
-        <section>
+        <section className="w-[1080px] mx-auto rounded-xl overflow-hidden shadow-xl bg-white px-[160px] py-[20px]">
             {/* profile header */}
             <div className="max-w-full flex flex-col justify-center p-[16px] gap-4">
                 <div className="flex flex-col items-center gap-4">
