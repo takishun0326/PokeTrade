@@ -3,10 +3,10 @@ package model
 import "time"
 
 type User struct {
-	ID             string    // ユーザーを一意に識別するID
-	Name           string    // ユーザー名
-	Email          string    // メールアドレス (ユニークであるべき)
-	HashedPassword string    // ハッシュ化されたパスワード
-	CreatedAt      time.Time // 作成日時
-	UpdatedAt      time.Time // 更新日時
+	ID             string    `gorm:"primaryKey"`
+	Name           string    `json:"name"`   // ユーザー名
+	Email          string    `gorm:"unique"` // メールアドレス (ユニークであるべき)
+	HashedPassword string    `json:"-"`      // JSONに含めない
+	CreatedAt      time.Time `gorm:"autoCreateTime"`
+	UpdatedAt      time.Time `gorm:"autoUpdateTime"`
 }

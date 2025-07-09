@@ -3,6 +3,7 @@ package api
 import (
 	user "backend/internal/api/handlers"
 	"backend/internal/domain/repository"
+	"backend/internal/infrastructure/datastore"
 	"backend/internal/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -16,11 +17,16 @@ func SetRouter() *gin.Engine {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 
-	// TODO: リポジトリ層のダミー
-	var userRepo repository.UserRepository = nil
-	// ユースケース層
+	// 1. DB接続
+	db := datastore.NewDB()
+
+	// 2. リポジトリ層
+	userRepoImpl := &datastore.UserRepositoryImpl{DB: db}
+	var userRepo repository.UserRepository = userRepoImpl
+
+	// 3. ユースケース層
 	userUsecase := usecase.NewUserUsecase(userRepo)
-	// ハンドラ層
+	// 4. ハンドラ層
 	userHandler := user.NewUserHandler(userUsecase)
 
 	// ユーザー関連のルートグループ

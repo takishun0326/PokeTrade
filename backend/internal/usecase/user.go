@@ -4,6 +4,7 @@ import (
 	"backend/internal/domain/model"
 	"backend/internal/domain/repository"
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -30,7 +31,11 @@ func (u *UserUsecase) RegisterUser(name, email, password string) (*model.User, e
 		UpdatedAt:      time.Now(),
 	}
 
-	// UserRepository.Save(newUser)
+	// 	datastore/user.goのSaveを使う
+	err := u.UserRepository.Save(newUser)
+	if err != nil {
+		log.Fatalf("Failed to save user: %v", err)
+	}
 
 	return newUser, nil
 }

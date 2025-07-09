@@ -34,7 +34,7 @@ func (h UserHandler) RegisterUser(c *gin.Context) {
 
 	registeredUser, err := h.UserUsecase.RegisterUser(req.Email, req.Name, req.Password)
 	if err != nil {
-		// TODO: エラーの種類に応じて、より具体的なHTTPステータスコードを返すように改善できます。
+		// TODO: エラーの種類に応じて、より具体的なHTTPステータスコードを返却
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
 		return
 	}

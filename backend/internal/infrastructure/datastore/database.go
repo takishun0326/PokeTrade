@@ -16,6 +16,7 @@ func NewDB() *gorm.DB {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
+	// Userテーブルの自動作成？
 	err = db.AutoMigrate(&model.User{})
 	if err != nil {
 		log.Fatalf("Failed to auto migrate database: %v", err)

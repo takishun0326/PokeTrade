@@ -3,14 +3,10 @@ package main
 
 import (
 	api "backend/internal/api"
-	datastore "backend/internal/infrastructure/datastore"
-	"fmt"
 )
 
 func main() {
 	router := api.SetRouter()
-	db := datastore.NewDB()
-	fmt.Println(db)
 	router.Run(":8080")
 }
 
