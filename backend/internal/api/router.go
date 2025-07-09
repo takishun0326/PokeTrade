@@ -35,5 +35,6 @@ func SetRouter() *gin.Engine {
 	//     userGroup.POST("/register", userHandler.RegisterUser)
 	// }
 	engine.POST("/users/register", userHandler.RegisterUser)
+	engine.POST("/users/login", userHandler.LoginUser)
 	return engine
 }

@@ -20,3 +20,12 @@ func (r *UserRepositoryImpl) Save(user *model.User) error {
 	}
 	return nil
 }
+
+func (r *UserRepositoryImpl) FindByEmail(email string) (*model.User, error) {
+	var user model.User
+	res := r.DB.Where("email = ?", email).First(&user)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return &user, nil
+}
