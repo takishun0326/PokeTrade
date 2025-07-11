@@ -2,6 +2,7 @@ package user
 
 import (
 	"backend/internal/usecase"
+	"backend/pkg/jwt"
 	"errors"
 	"net/http"
 
@@ -66,8 +67,8 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 
 	loginedUser, err := h.UserUsecase.LoginUser(req.Email, req.Password)
 	if err != nil {
-		// ユースケースから返されたエラーの種類をチェックし、適切なHTTPステータスコードを返します。
-		// errors.Is() を使うことで、ラップされたエラー（fmt.Errorf("%w", err)）も判定できます。
+		// ユースケースから返されたエラーの種類をチェックし、適切なHTTPステータスコードを返却
+		// errors.Is() を使うことで、ラップされたエラー（fmt.Errorf("%w", err)）も判定可
 		if errors.Is(err, gorm.ErrRecordNotFound) || errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
 			// ユーザーが見つからない、またはパスワードが一致しない場合は認証失敗
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
@@ -78,8 +79,31 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
+	// JWT認証
+	jwtToken, err := jwt.GenerateToken(loginedUser.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to generate authentication token",
+		})
+	}
+
+	// クッキーにトークンをセット
+	// 認証クッキーの有効期間をトークンと同じ24時間 (秒数) に設定
+	// Path: "/" (全パスで有効)
+	// Domain: "" (現在のドメイン)
+	// Secure: false (開発環境ではfalse、本番環境ではtrueに)
+	// HttpOnly: true (JavaScriptからのアクセスを禁止し、XSS攻撃を防ぐ)
+	const jwtCookieMaxAge = 24 * 60 * 60 // 24時間（秒）
+	const jwtCookieSecure = false        // TODO: 本番環境では true に変更すること！
+
+	c.SetSameSite(http.SameSiteLaxMode)
+	// クッキーにトークンをセット(キー, 値, 有効期限, パス, ドメイン, https, httponly)
+	c.SetCookie("Authorization", jwtToken, jwtCookieMaxAge, "/", "", jwtCookieSecure, true)
+
+	// ログイン成功 200
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User logined successfully",
+		"token":   jwtToken,
 		"user": gin.H{
 			"id":    loginedUser.ID,
 			"name":  loginedUser.Name,

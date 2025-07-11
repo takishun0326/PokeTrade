@@ -55,8 +55,8 @@ func (u *UserUsecase) LoginUser(email, password string) (*model.User, error) {
 	// Passwordの比較
 	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password))
 	if err != nil {
-		// bcrypt.CompareHashAndPassword は一致しない場合 bcrypt.ErrMismatchedHashAndPassword を返します。
-		return nil, fmt.Errorf("invalid credentials: %w", err) // より汎用的なエラーメッセージに
+		// bcrypt.CompareHashAndPassword は一致しない場合 bcrypt.ErrMismatchedHashAndPassword を返却
+		return nil, fmt.Errorf("invalid credentials: %w", err) // 汎用的なエラーメッセージ
 	}
 
 	return user, nil
