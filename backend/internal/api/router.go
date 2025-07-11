@@ -2,9 +2,11 @@ package api
 
 import (
 	user "backend/internal/api/handlers"
+	"backend/internal/api/middleware"
 	"backend/internal/domain/repository"
 	"backend/internal/infrastructure/datastore"
 	"backend/internal/usecase"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,5 +38,20 @@ func SetRouter() *gin.Engine {
 	// }
 	engine.POST("/users/register", userHandler.RegisterUser)
 	engine.POST("/users/login", userHandler.LoginUser)
+
+	// 認証が必要なルート
+	authedGroup := engine.Group("/")
+	{
+		authedGroup.Use(middleware.AuthMiddleware())
+
+		// authenticated.GET("/pokemon/wants", pokemonHandler.GetWants)
+		// authenticated.GET("/profile", userHandler.GetProfile)
+
+		authedGroup.GET("/test_auth", func(c *gin.Context) { // 一時的なテストエンドポイント
+			userID := c.GetString("userID") // ミドルウェアでセットされたuserIDを取得
+			c.JSON(http.StatusOK, gin.H{"message": "Authenticated!", "user_id": userID})
+		})
+	}
+
 	return engine
 }
